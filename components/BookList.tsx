@@ -3,7 +3,7 @@ import BookCard from "./BookCard";
 
 const BookList = ({ title, books, containerClassName }: BookListProps) => {
   return (
-    <section className="">
+    <section className={containerClassName}>
       <h2 className="font-semibold text-light-100 text-3xl uppercase">
         {title}
       </h2>

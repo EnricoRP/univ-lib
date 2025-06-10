@@ -8,7 +8,7 @@ const Home = () => {
     <>
       <BookOverview {...sampleBooks[0]} />
 
-      <BookList title="popular books" books={sampleBooks} containerClassName="" />
+      <BookList title="popular books" books={sampleBooks} containerClassName="mt-28" />
     </>
   );
 };
