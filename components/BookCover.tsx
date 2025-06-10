@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 import BookCoverSvg from "./BookCoverSvg";
-type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
+type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide" | "default";
 
 const variantStyles: Record<BookCoverVariant, string> = {
   extraSmall: "book-cover_extra_small",
@@ -10,6 +10,7 @@ const variantStyles: Record<BookCoverVariant, string> = {
   medium: "book-cover_medium",
   regular: "book-cover_regular",
   wide: "book-cover_wide",
+  default: "book-cover",
 };
 
 interface Props {
@@ -19,8 +20,8 @@ interface Props {
   coverUrl: string;
 }
 const BookCover = ({
-  variant = "regular",
   className,
+  variant = "default",
   coverColor = "#012B48",
   coverUrl = "https://placehold.co/400x600.png",
 }: Props) => {
