@@ -9,11 +9,11 @@ const page = () => (
     schema={signInSchema}
     defaultValues={{
       email:'',
-      password:''
+      password:'' 
     }} 
     onSubmit={async (data) => {
-      // Your actual submission logic here
-      return { success: true }; // or { success: false, error: "Message" }
+      console.log(data); 
+      return { success: true }; 
     }}
   />
 );
