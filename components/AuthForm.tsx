@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useRef } from "react";
 import {
   DefaultValues,
   FieldValues,
@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import Link from "next/link";
-import ImageUpload from "./ImageUpload";
+import ImageUpload, { ImageUploadRef } from "./ImageUpload";
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
@@ -43,7 +42,20 @@ const AuthForm = <T extends FieldValues>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>,
   });
-  const handleSubmit: SubmitHandler<T> = async (data) => {};
+
+  const imageUploadRef = useRef<ImageUploadRef>(null);
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    try {
+      const result = await onSubmit(data);
+      if (result.success) {
+        if (imageUploadRef.current) {
+          await imageUploadRef.current.handleUpload();
+        }
+      }
+    } catch (error: unknown) {
+      console.error(error);
+    }
+  };
   const isSignIn = type === "SIGN_IN";
 
   return (
@@ -58,7 +70,7 @@ const AuthForm = <T extends FieldValues>({
       </p>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="w-full space-y-6"
         >
           {Object.keys(defaultValues).map((field) => (
@@ -84,9 +96,6 @@ const AuthForm = <T extends FieldValues>({
                       />
                     )}
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
