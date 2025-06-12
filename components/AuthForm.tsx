@@ -46,11 +46,12 @@ const AuthForm = <T extends FieldValues>({
   const imageUploadRef = useRef<ImageUploadRef>(null);
   const handleSubmit: SubmitHandler<T> = async (data) => {
     try {
+      console.log(imageUploadRef.current);
+      if (imageUploadRef.current) {
+        await imageUploadRef.current.handleUpload();
+      }
       const result = await onSubmit(data);
       if (result.success) {
-        if (imageUploadRef.current) {
-          await imageUploadRef.current.handleUpload();
-        }
       }
     } catch (error: unknown) {
       console.error(error);
@@ -85,7 +86,11 @@ const AuthForm = <T extends FieldValues>({
                   </FormLabel>
                   <FormControl>
                     {field.name === "universityCard" ? (
-                      <ImageUpload />
+                      <ImageUpload ref={imageUploadRef}
+                        folder="images/university_id_card"
+                        placeholder="Upload a file"
+                        onFileChange={field.onChange}
+                      />
                     ) : (
                       <Input
                         required
